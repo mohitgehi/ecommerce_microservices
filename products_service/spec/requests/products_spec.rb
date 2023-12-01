@@ -14,14 +14,15 @@ RSpec.describe "Products", type: :request do
   end
 
   describe "GET /products/:id" do
-    let!(:product) {create(:product)}
-    before {
-      get '/products/1'
-    }
-    it('Shows product with id 2') do
+    let!(:product) { create(:product) }
+
+    it "should return a product" do
+      get "/products/#{product.id}"
       expect(response).to have_http_status(:ok)
-      expect(json_response['id']).to eq(product.id)
+      expect(json_response["name"]).to eq(product.name)
+      expect(json_response["description"]).to eq(product.description)
     end
+
     it "should return not found" do
       get "/products/100"
       expect(response).to have_http_status(:not_found)
@@ -76,6 +77,23 @@ RSpec.describe "Products", type: :request do
         expect(response).to have_http_status(:unprocessable_entity)
         expect(json_response["errors"]).to include("Description is too short (minimum is 2 characters)")
       end
+    end
+  end
+  describe "DELETE /products/id" do
+    let!(:product) { create(:product) }
+    let(:valid_token) { JWTHelper.generate_jwt_token({user_id: 1}) }
+    let(:valid_headers) { { "Authorization": "Bearer #{valid_token}" }}
+
+    it "should delete a product" do
+      delete "/products/#{product.id}", headers: valid_headers
+      expect(response).to have_http_status(:no_content)
+      expect(Product.count).to eq(0)
+    end
+
+    it "should return not found" do
+      delete "/products/100", headers: valid_headers
+      expect(response).to have_http_status(:not_found)
+      expect(json_response["errors"]).to include("Product not found")
     end
   end
 

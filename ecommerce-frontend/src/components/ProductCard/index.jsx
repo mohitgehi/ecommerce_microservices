@@ -8,7 +8,7 @@ import CardMedia from '@mui/material/CardMedia';
 import Grid from '@mui/material/Grid';
 import Typography from '@mui/material/Typography';
 import { useQueryClient, useMutation} from '@tanstack/react-query'
-import { useNavigate } from "react-router-dom";
+import {  useNavigate } from "react-router-dom";
 
 
 export const ProductCard = ({product, showAddToCartButton = false, showRemoveFromCartButton = false, showQuantity = false, page="cart"}) => {
@@ -22,7 +22,7 @@ export const ProductCard = ({product, showAddToCartButton = false, showRemoveFro
         "price": product.price,
         "quantity": 1
       }
-      fetch('http://localhost:3001/orders', {
+      return fetch('http://localhost:3001/orders', {
             method: 'POST',
             headers: {
               'Authorization': `Bearer ${token}`, // Include the token in the Authorization header
@@ -39,12 +39,11 @@ export const ProductCard = ({product, showAddToCartButton = false, showRemoveFro
     }
   }
   const removeFromCart = async(product)=>{
-    try {
       const body = {
         "product_id": `${product.id}`
       }
 
-      fetch('http://localhost:3001/orders', {
+      return fetch('http://localhost:3001/orders', {
             method: 'DELETE',
             headers: {
               'Authorization': `Bearer ${token}`, // Include the token in the Authorization header
@@ -55,10 +54,7 @@ export const ProductCard = ({product, showAddToCartButton = false, showRemoveFro
           }).then(
             (res) => res.json(),
           )
-    } catch (error) {
-      // Handle network or other errors
-      console.error('Error:', error);
-    }
+    
   }
 
   const mutation = useMutation({
@@ -78,7 +74,9 @@ export const ProductCard = ({product, showAddToCartButton = false, showRemoveFro
 
   
   return (
-    <Grid item xs={12} sm={6} md={4}>
+    <Grid item xs={12} sm={6} md={4} 
+    // onClick={()=>navigate(`/product/${product.id}`)}
+    >
                 <Card
                   sx={{ height: '100%', display: 'flex', flexDirection: 'column' }}
                 >

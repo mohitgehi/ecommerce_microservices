@@ -4,7 +4,7 @@ class ApplicationController < ActionController::API
   def authenticate_user
     auth_header = request.headers["Authorization"]
     token = auth_header.split(" ").last if auth_header
-
+    p "auth_headerauth_header #{auth_header}"
     if token.blank?
       render json: {error: "Must provide a token"}, status: :forbidden
     else

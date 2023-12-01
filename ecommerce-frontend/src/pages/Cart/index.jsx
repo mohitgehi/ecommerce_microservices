@@ -10,6 +10,7 @@ import { useQuery } from '@tanstack/react-query'
 
 export default function Cart() {
       const token = localStorage.getItem('token');
+      console.log('token', token)
       const { isPending, error, data:orders } = useQuery({
         queryKey: ['orders'],
         queryFn: () =>

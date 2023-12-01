@@ -26,7 +26,7 @@ export default function SignIn() {
         "email": email,
         "password": password,
       }
-      fetch('http://localhost:3004/login', {
+      return fetch('http://localhost:3004/login', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
@@ -44,7 +44,8 @@ export default function SignIn() {
 
   const mutation = useMutation({
     mutationFn: handleSubmit,
-    onSuccess: () => {
+    onSuccess: (data) => {
+      localStorage.setItem('token', data.token);
       navigate('/')
     },
   })

@@ -45,9 +45,14 @@ group :development do
   # gem "spring"
 end
 
+gem 'rspec-rails' # For testing
+gem 'factory_bot_rails' # For test factories
+gem 'faker' # For generating fake data in seeds and tests
+
+gem 'active_model_serializers' # For JSON serialization
 
 gem "pg", "~> 1.5"
 
 gem "jwt", "~> 2.7"
 
-gem "httparty", "~> 0.21.0"
+gem "httpparty", "~> 0.2.0"

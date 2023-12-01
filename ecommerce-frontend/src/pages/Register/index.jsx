@@ -26,7 +26,7 @@ export default function Register() {
         "password": password,
         "password_confirmation": confirmPassword,
       }
-      fetch('http://localhost:3004/register', {
+      return fetch('http://localhost:3004/register', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
@@ -42,7 +42,8 @@ export default function Register() {
 
   const mutation = useMutation({
     mutationFn: handleSubmit,
-    onSuccess: () => {
+    onSuccess: (data) => {
+      localStorage.setItem('token', data.token);
       navigate('/')
     },
   })

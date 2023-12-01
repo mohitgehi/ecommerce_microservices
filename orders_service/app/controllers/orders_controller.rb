@@ -4,18 +4,16 @@ class OrdersController < ApplicationController
   def index
     @order = Order.find_by(user_id: @current_user_id, status: 'CART')
     product_ids = @order.line_items.pluck(:product_id)
-    response = HTTParty.get('http://localhost:3002/products', body:  {product_ids: product_ids})
-    products = response.parsed_response
+    products = ProductClient.get_products(product_ids)
     products.each do |product|
       line_item = @order.line_items.find_by(product_id: product["id"])
       product["quantity"] = line_item.quantity
-
     end
-    if response.success?
-      render json: products, status: :ok
-    else
-      render json: {message: 'Failed to retrieve products'}, status: :unprocessable_entity
-    end
+    render json: products, status: :ok
+    # if response.success?
+    # else
+    #   render json: {message: 'Failed to retrieve products'}, status: :unprocessable_entity
+    # end
   end
 
   def create

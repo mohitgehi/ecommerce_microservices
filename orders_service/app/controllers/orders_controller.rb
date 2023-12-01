@@ -10,10 +10,6 @@ class OrdersController < ApplicationController
       product["quantity"] = line_item.quantity
     end
     render json: products, status: :ok
-    # if response.success?
-    # else
-    #   render json: {message: 'Failed to retrieve products'}, status: :unprocessable_entity
-    # end
   end
 
   def create
